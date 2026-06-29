@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProdukController;
 
 Route::get('/kasir-monolith', function () {
     // Ini BACKEND (Menyiapkan data dari database/gudang)
