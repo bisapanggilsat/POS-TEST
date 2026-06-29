@@ -1,22 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProdukController;
 
-Route::get('/kasir-monolith', function () {
-    // Ini BACKEND (Menyiapkan data dari database/gudang)
-    $namaKasir = "Satria";
-    $totalTransaksi = 150000;
-
-    // Ini menghubungkan BE ke FE (Data dikirim ke file HTML/Blade)
-    return view('halaman_kasir', [
-        'kasir' => $namaKasir,
-        'total' => $totalTransaksi
-    ]);
+Route::get('/', function () {
+    return view('welcome');
 });
 
-// URL buat buka form
-Route::get('/produk/tambah', [ProdukController::class, 'tampilkanForm']);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// URL buat memproses kiriman data dari form (pake POST)
-Route::post('/produk/simpan', [ProdukController::class, 'simpanProduk'])->name('produk.simpan');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
